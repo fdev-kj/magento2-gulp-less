@@ -53,16 +53,21 @@ gulp.task('less:lint', function lintCssTask() {
 /**
  * Compile less
  */
+gulp.task('asd', function () {
+  return gulp.src(`${staticFolder}/css/styles-m.less`)
+      .pipe(less())
+      .pipe(gulp.dest(staticFolder + '/css'));
+});
 gulp.task('less:compile', () => {
   const filesToCompile = theme.files.map((file) => {
     return (
-      `pub/static/frontend/${theme.vendor}/${theme.name}/${theme.locale}/${file}.less`
+      `${staticFolder}/${file}.less`
     );
   });
 
   return gulp
     .src(filesToCompile)
-    .pipe(sourcemap.init())
+    .pipe(less())
     .pipe(
       less().on('error', (error) => {
         log(chalk.red(`Error compiling ${theme.vendor}/${theme.name}: ${error.message}`));
@@ -149,7 +154,7 @@ gulp.task('image:media:optimize', function (done) {
   done();
 });
 
-/** 
+/**
  * Resize specific images
  * @input {string} - specify input blob
  * @output {string} - specify output folder, defaults to pub/media/resized
@@ -191,7 +196,7 @@ gulp.task('image:resize', function (done) {
     if (!options.height) {
       log(chalk.red('Please specify new image dimensions'));
       done();
-  
+
       return;
     }
   }
